@@ -9,6 +9,12 @@ namespace StyleWeaver
 {
     public class Fonts
     {
+        public Fonts()
+        {
+            Fonts.pageData = Finder.FindDictByKeyValue(API.ProjectData, "name", "Typography");
+            Fonts.fontStyle = Fonts.GetFonts();
+        }
+
         static string[] targetFontKeys = new string[]
         {
             "Title Big",
@@ -46,10 +52,8 @@ namespace StyleWeaver
         };
 
         public static Dictionary<string, object> pageData = new Dictionary<string, object>();
-        static Fonts()
-        {
-            Fonts.pageData = Finder.FindDictByKeyValue(API.ProjectData, "name", "Typography");
-        }
+        public static Dictionary<string, object> fontStyle = new Dictionary<string, object>();
+        
 
         public static Dictionary<string, object> GetFonts()
         { 

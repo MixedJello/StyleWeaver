@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace StyleWeaver
@@ -25,9 +26,11 @@ namespace StyleWeaver
                         }
 
                         // If the value is another dictionary or list, recursively search within it
-                        if (kvp.Value is Dictionary<string, object> || kvp.Value is List<object>)
+                        if (kvp.Value is JsonElement jsonElement && jsonElement.ValueKind == JsonValueKind.Object)
                         {
-                            var result = FindDictByKeyValue((Dictionary<string, object>)kvp.Value, targetKey, targetValue);
+                            // Convert the JsonElement object to a Dictionary<string, object>
+                            var nestedDict = JsonElementToDictionary(jsonElement);
+                            var result = FindDictByKeyValue(nestedDict, targetKey, targetValue);
                             if (result != null)
                             {
                                 return result;
@@ -37,17 +40,17 @@ namespace StyleWeaver
                 }
                 // Not sure if this is needed as the item is explicitly a dictionary
                 //NEED TESTING
-                /*else if (data is List<object> list)
+                else if (data is object list)
                 {
-                    foreach (var item in list)
+                    /*foreach (var item in list)
                     {
                         var result = FindDictByKeyValue(item, targetKey, targetValue);
                         if (result != null)
                         {
                             return result;
                         }
-                    }
-                }*/
+                    }*/
+                }
 
                 // If no match is found, return null
                 return null;
@@ -57,6 +60,16 @@ namespace StyleWeaver
                 Console.WriteLine($"Error: {e.Message}");
                 return null;
             }
+        }
+
+        public static Dictionary<string, object> JsonElementToDictionary(JsonElement element)
+        {
+            var dict = new Dictionary<string, object>();
+            foreach (var property in element.EnumerateObject())
+            {
+                dict.Add(property.Name, property.Value);
+            }
+            return dict;
         }
 
         // Method to recursively find a value by key

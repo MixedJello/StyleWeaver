@@ -24,13 +24,13 @@ namespace StyleWeaver
                 { "X-Figma-Token", personalAccessKey }
             };
 
-        static API()
+        public static async Task InitAPI()
         {
-            API.GetProjectData();
-            API.GetFileDataAsync();
+            await API.GetProjectData();
+            await API.GetFileDataAsync();
         }
 
-        public static async void GetFileDataAsync()
+        public static async Task GetFileDataAsync()
         {
             using (HttpClient client = new HttpClient())
             {
@@ -56,7 +56,7 @@ namespace StyleWeaver
             }
         }
 
-        public static async void GetProjectData()
+        public static async Task GetProjectData()
         {
             using (HttpClient client = new HttpClient())
             {

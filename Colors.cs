@@ -8,19 +8,20 @@ namespace StyleWeaver
 {
     public class ColorsSW
     {
-
-        public static Dictionary<string, object> pageData = new Dictionary<string, object>();
-
-        public Dictionary<string, object> LTColors { get; set; }
-        public Dictionary<string, object> DKColors { get; set; }
-        public Dictionary<string, object> allColors { get; set; }
-        static ColorsSW()
+        public ColorsSW()
         {
             string key = "name";
             string value = "Colors";
             Dictionary<string, object> pageData = Finder.FindDictByKeyValue(API.ProjectData, key, value);
 
         }
+
+        public static Dictionary<string, object> pageData = new Dictionary<string, object>();
+
+        public static Dictionary<string, object> LTColors { get; set; }
+        public static Dictionary<string, object> DKColors { get; set; }
+        public static Dictionary<string, object> allColors { get; set; }
+        
 
         static string[] targetLTColorKeys = new string[]
         {
@@ -61,7 +62,7 @@ namespace StyleWeaver
             return hexValue;
         }
 
-        public static Dictionary<string, object> GetLTColor()
+        public static void GetLTColor()
         {
             Dictionary<string, object> ltColor = new Dictionary<string, object>();
             var ltDict = Finder.FindGrandparentContainer(ColorsSW.pageData, "characters", "Light Colors");
@@ -71,10 +72,10 @@ namespace StyleWeaver
                 var style = ColorsSW.GetColorStyles(Finder.FindDictByKeyValue(ltDict, "name", item));
                 ltColor[item] = style;
             }
-            return ltColor;
+            ColorsSW.LTColors = ltColor;
         }
 
-        public static Dictionary<string, object> GetDKColor()
+        public static void GetDKColor()
         {
             Dictionary<string, object> dkColor = new Dictionary<string, object>();
             var dkDict = Finder.FindGrandparentContainer(ColorsSW.pageData, "characters", "Dark Colors");
@@ -85,16 +86,16 @@ namespace StyleWeaver
                 var style = ColorsSW.GetColorStyles(Finder.FindDictByKeyValue(dkDict, "name", formatString));
                 dkColor[item] = style;
             }
-            return dkColor;
+             ColorsSW.DKColors = dkColor;
         }
 
-        public static Dictionary<string, object> GetColors(Dictionary<string, object> ltDict, Dictionary<string, object> dkDict)
+        public static void GetColors(Dictionary<string, object> ltDict, Dictionary<string, object> dkDict)
         {
             foreach (var item in dkDict)
             {
                 ltDict[item.Key] = item.Value;
             }
-            return ltDict;
+            ColorsSW.allColors = ltDict;
         }
     }
 }
