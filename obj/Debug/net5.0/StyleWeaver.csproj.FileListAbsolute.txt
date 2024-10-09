@@ -1,0 +1,16 @@
+C:\Users\Tyler Mcgue\Desktop\C#\FigmaAPI\StyleWeaver\bin\Debug\net5.0\StyleWeaver.exe
+C:\Users\Tyler Mcgue\Desktop\C#\FigmaAPI\StyleWeaver\bin\Debug\net5.0\StyleWeaver.deps.json
+C:\Users\Tyler Mcgue\Desktop\C#\FigmaAPI\StyleWeaver\bin\Debug\net5.0\StyleWeaver.runtimeconfig.json
+C:\Users\Tyler Mcgue\Desktop\C#\FigmaAPI\StyleWeaver\bin\Debug\net5.0\StyleWeaver.runtimeconfig.dev.json
+C:\Users\Tyler Mcgue\Desktop\C#\FigmaAPI\StyleWeaver\bin\Debug\net5.0\StyleWeaver.dll
+C:\Users\Tyler Mcgue\Desktop\C#\FigmaAPI\StyleWeaver\bin\Debug\net5.0\StyleWeaver.pdb
+C:\Users\Tyler Mcgue\Desktop\C#\FigmaAPI\StyleWeaver\obj\Debug\net5.0\StyleWeaver.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Tyler Mcgue\Desktop\C#\FigmaAPI\StyleWeaver\obj\Debug\net5.0\StyleWeaver.AssemblyInfoInputs.cache
+C:\Users\Tyler Mcgue\Desktop\C#\FigmaAPI\StyleWeaver\obj\Debug\net5.0\StyleWeaver.AssemblyInfo.cs
+C:\Users\Tyler Mcgue\Desktop\C#\FigmaAPI\StyleWeaver\obj\Debug\net5.0\StyleWeaver.csproj.CoreCompileInputs.cache
+C:\Users\Tyler Mcgue\Desktop\C#\FigmaAPI\StyleWeaver\obj\Debug\net5.0\StyleWeaver.dll
+C:\Users\Tyler Mcgue\Desktop\C#\FigmaAPI\StyleWeaver\obj\Debug\net5.0\refint\StyleWeaver.dll
+C:\Users\Tyler Mcgue\Desktop\C#\FigmaAPI\StyleWeaver\obj\Debug\net5.0\StyleWeaver.pdb
+C:\Users\Tyler Mcgue\Desktop\C#\FigmaAPI\StyleWeaver\obj\Debug\net5.0\StyleWeaver.genruntimeconfig.cache
+C:\Users\Tyler Mcgue\Desktop\C#\FigmaAPI\StyleWeaver\obj\Debug\net5.0\ref\StyleWeaver.dll
+C:\Users\Tyler Mcgue\Desktop\C#\FigmaAPI\StyleWeaver\obj\Debug\net5.0\StyleWeaver.sourcelink.json

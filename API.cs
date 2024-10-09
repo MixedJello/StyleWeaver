@@ -12,17 +12,25 @@ namespace StyleWeaver
     public class API
     {
         static string personalAccessKey = Config.personalAccessKey;   //StyleWeaver Key Token
-
         //Master: vDumLlFAmbWExNHqMBlUxq Project: Xzcw3d0MSWMOphlWXMwg0k
-        static string projectUrlKey = "Xzcw3d0MSWMOphlWXMwg0k";
+        static string projectUrlKey = "vDumLlFAmbWExNHqMBlUxq";
         static string url = "https://api.figma.com/v1/files/" + projectUrlKey;
+
+        public static Dictionary<string, object> FileData { get; set; }
+        public static Dictionary<string, object> ProjectData { get; set; }
 
         static Dictionary<string, string> headers = new Dictionary<string, string>
             {
                 { "X-Figma-Token", personalAccessKey }
             };
 
-        public static async Task<object> GetFileDataAsync<T>()
+        static API()
+        {
+            API.GetProjectData();
+            API.GetFileDataAsync();
+        }
+
+        public static async void GetFileDataAsync()
         {
             using (HttpClient client = new HttpClient())
             {
@@ -38,17 +46,17 @@ namespace StyleWeaver
                 if (response.IsSuccessStatusCode)
                 {
                     // Deserialize JSON response to the specified type (T)
-                    return await response.Content.ReadFromJsonAsync<T>();
+                    API.FileData = await response.Content.ReadFromJsonAsync<Dictionary<string, object>>();
                 }
                 else
                 {
                     Console.WriteLine($"Error: {response.StatusCode}, {await response.Content.ReadAsStringAsync()}");
-                    return default(T); // Return null or default for type T in case of error
+                    API.FileData = default(Dictionary<string, object>); // Return null or default for type T in case of error
                 }
             }
         }
 
-        public static async Task<object> GetProjectData<T>()
+        public static async void GetProjectData()
         {
             using (HttpClient client = new HttpClient())
             {
@@ -63,21 +71,15 @@ namespace StyleWeaver
 
                 if (response.IsSuccessStatusCode)
                 {
-                    // Deserialize JSON response to the specified type (T)
-                    return await response.Content.ReadFromJsonAsync<T>();
-
+                    API.ProjectData = await response.Content.ReadFromJsonAsync<Dictionary<string, object>>();
                 }
                 else
                 {
                     Console.WriteLine($"Error: {response.StatusCode}, {await response.Content.ReadAsStringAsync()}");
-                    return default(T); // Return null or default for type T in case of error
+                    API.ProjectData =  default(Dictionary<string, object>); // Return null or default for type T in case of error
                 }
             }
         }
 
-        public static void GetStyleGuide()
-        { 
-            
-        }
     }
 }

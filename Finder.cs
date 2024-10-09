@@ -9,7 +9,7 @@ namespace StyleWeaver
 {
     public class Finder
     {
-        public static Dictionary<string, object> FindDictByKeyValue(object data, string targetKey, object targetValue)
+        public static Dictionary<string, object> FindDictByKeyValue(Dictionary<string, object> data, string targetKey, object targetValue)
         {
             try
             {
@@ -27,7 +27,7 @@ namespace StyleWeaver
                         // If the value is another dictionary or list, recursively search within it
                         if (kvp.Value is Dictionary<string, object> || kvp.Value is List<object>)
                         {
-                            var result = FindDictByKeyValue(kvp.Value, targetKey, targetValue);
+                            var result = FindDictByKeyValue((Dictionary<string, object>)kvp.Value, targetKey, targetValue);
                             if (result != null)
                             {
                                 return result;
@@ -35,8 +35,9 @@ namespace StyleWeaver
                         }
                     }
                 }
-                // If the data is a list, iterate through each item
-                else if (data is List<object> list)
+                // Not sure if this is needed as the item is explicitly a dictionary
+                //NEED TESTING
+                /*else if (data is List<object> list)
                 {
                     foreach (var item in list)
                     {
@@ -46,7 +47,7 @@ namespace StyleWeaver
                             return result;
                         }
                     }
-                }
+                }*/
 
                 // If no match is found, return null
                 return null;
@@ -59,7 +60,7 @@ namespace StyleWeaver
         }
 
         // Method to recursively find a value by key
-        public static object FindValueByKey(object data, string targetKey)
+        public static Dictionary<string, object> FindValueByKey(object data, string targetKey)
         {
             // If data is a dictionary, search through its key-value pairs
             if (data is Dictionary<string, object> dict)
@@ -69,7 +70,7 @@ namespace StyleWeaver
                     // If the key matches the target key, return the value
                     if (kvp.Key == targetKey)
                     {
-                        return kvp.Value;
+                        return (Dictionary<string, object>)kvp.Value;
                     }
 
                     // If the value is another dictionary or list, recursively search within it
