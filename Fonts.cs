@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,97 +10,90 @@ namespace StyleWeaver
 {
     public class Fonts
     {
+
+        public static dynamic pageData;
+
+        public static string[] targetFontKeys;
+
+        public static string[] fontStyleKeys;
+
+        public static Dictionary<string, string> fontStyles = new Dictionary<string, string>();
+
         public Fonts()
         {
-            Fonts.pageData = Finder.FindDictByKeyValue(API.ProjectData, "name", "Typography");
-            Fonts.fontStyle = Fonts.GetFonts();
+            Fonts.pageData = API.ProjectData.SelectToken($"..children[?(@.name == 'Typography')]");
+            InitializeVariables();
+            GetFonts();
+            Console.WriteLine();
+        }
+        public static void InitializeVariables()
+        {
+            Fonts.targetFontKeys = new string[]
+            {
+                "Title Big",
+                "Callout",
+                "Title 1",
+                "Title 2",
+                "Title 3",
+                "Title 4",
+                "Title 5",
+                "Title 6",
+                "Paragraph",
+                "Large Paragraph",
+                "Primary Nav Link",
+                "Secondary Nav",
+                "Button text",
+                "Quote",
+                "Item",
+                "Note",
+                "Form Label",
+                "Kicker",
+                "Phone Number",
+                "Tag",
+                "Author Name"
+            };
+
+            Fonts.fontStyleKeys = new string[]
+            {
+                "fontFamily",
+                "fontWeight",
+                "fontSize",
+                "letterSpacing",
+                "lineHeightPx",
+                "textCase",
+                "italic"
+            };
         }
 
-        static string[] targetFontKeys = new string[]
+        public static void GetFonts()
         {
-            "Title Big",
-            "Callout",
-            "Title 1",
-            "Title 2",
-            "Title 3",
-            "Title 4",
-            "Title 5",
-            "Title 6",
-            "Paragraph",
-            "Large Paragraph",
-            "Primary Nav Link",
-            "Secondary Nav",
-            "Button text",
-            "Quote",
-            "Item",
-            "Note",
-            "Form Label",
-            "Kicker",
-            "Phone Number",
-            "Tag",
-            "Author Name"
-        };
+            string[] intKeys = { "fontSize", "lineHeightPx", "letterSpacing" };
+            Dictionary<string, string> fonts = new Dictionary<string, string>();
 
-        static string[] fontStyleKeys = new string[]
-        {
-            "fontFamily",
-            "fontWeight",
-            "fontSize",
-            "letterSpacing",
-            "lineHeightPx",
-            "textCase",
-            "italic"
-        };
-
-        public static Dictionary<string, object> pageData = new Dictionary<string, object>();
-        public static Dictionary<string, object> fontStyle = new Dictionary<string, object>();
-        
-
-        public static Dictionary<string, object> GetFonts()
-        { 
-            Dictionary<string, object> fonts = new Dictionary<string, object>();
-            Dictionary<string, object> styles = new Dictionary<string, object>();
-            string[] validKeys = { "fontSize", "lineHeightPx", "letterSpacing" };
-
-            foreach (string key in targetFontKeys)
+            foreach (var fontKey in Fonts.targetFontKeys)
             {
-                styles = Fonts.GetFontStyle();
-
-                if (styles.Count() >= 1)
-                {
-                    foreach (var style in styles)
-                    {
-                        if (style.Value is float)
-                        {
-                            if (validKeys.Contains(style.Key))
-                                styles[style.Key] = Math.Round((float)style.Value, 2);
-                        }
-                        styles[style.Key] = style.Value.ToString();
-                        fonts[key + " " + style.Key] = styles[style.Key];
-                    }
-                }
-            }
-
-            return fonts;
-        }
-
-        public static Dictionary<string, object> GetFontStyle()
-        {
-            Dictionary<string, object> fontStyle = new Dictionary<string, object>();
-
-            var style = Finder.FindValueByKey(Fonts.pageData, "style");
-            if (style is Dictionary<string, object>)
-            {
-                foreach (var kvp in style)
-                {
-                    if (Fonts.fontStyleKeys.Contains(kvp.Key))
-                    { 
-                        fontStyle.Add(kvp.Key, kvp.Value);
-                    }
-                }
+                var fontObject = Fonts.pageData.SelectToken($"..children[?(@.name == '{fontKey}')]");
                 
+                foreach (var fontStyle in Fonts.fontStyleKeys)
+                {
+                    var style = fontObject.SelectToken($"style.{fontStyle}");
+                    if (style == null)
+                    {
+                        Console.WriteLine(fontStyle + " in " + fontKey + " - Doesn't Exist. Creating an empty value");
+                        fonts[fontKey + " " + fontStyle] = "";
+                        continue;
+                    }
+                    //Need to find a way to round this.
+                    if (Array.Exists(intKeys, key => key == fontStyle) && style.Type == JTokenType.Float && style.Value % 1 != 0 )// && Array.Exists(intKeys, key => key == fontStyle)
+                    {
+                        style = Math.Round(style.Value, 2);
+                    }
+                    fonts[fontKey + " " + fontStyle] = style.ToString();
+                }
             }
-            return fontStyle;
+
+            Fonts.fontStyles = fonts;
         }
+
     }
 }

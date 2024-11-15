@@ -154,14 +154,18 @@ namespace StyleWeaver
                 ");
                 }
             }
+
+            Fonts.fontStyles = CleanData(Fonts.fontStyles);
+            ApplyReplacements(Fonts.fontStyles, "fonts.txt");
+            ApplyReplacements(ColorsSW.allColors, "colors.txt");
         }
 
-        public static Dictionary<string, object> CleanData(Dictionary<string, object> inputDict)
+        public static Dictionary<string, string> CleanData(Dictionary<string, string> inputDict)
         {
 
-            var tempDict = new Dictionary<string, object>();
+            var tempDict = new Dictionary<string, string>();
 
-            var fnt_t = inputDict["Title Big"];
+            var fnt_t = inputDict["Title Big fontFamily"];
             object fnt_m = string.Empty;
 
             var baseFont = float.Parse(inputDict["Paragraph fontSize"].ToString());
@@ -179,12 +183,12 @@ namespace StyleWeaver
             {
                 fnt_m = fnt_t;
             }
-            foreach (var kvp in inputDict.ToList())
+            foreach (var kvp in inputDict)
             {
                 switch (kvp.Key)
                 {
                     case var key when key.Contains("textCase"):
-                        switch (kvp.Value.ToString())
+                        switch (kvp.Value)
                         {
                             case "UPPER":
                                 inputDict[kvp.Key] = "uppercase";
@@ -199,7 +203,7 @@ namespace StyleWeaver
                         break;
 
                     case var key when key.Contains("italic"):
-                        switch (kvp.Value.ToString())
+                        switch (kvp.Value)
                         {
                             case "":
                                 inputDict[kvp.Key] = "normal";
@@ -211,7 +215,7 @@ namespace StyleWeaver
                         break;
 
                     case var key when key.Contains("fontFamily"):
-                        if (kvp.Value.ToString() == fnt_t.ToString())
+                        if (kvp.Value.ToString() == fnt_t)
                         {
                             inputDict[kvp.Key] = "var(--fnt-t)";
                         }
@@ -222,10 +226,11 @@ namespace StyleWeaver
                         break;
 
                     case var key when key.Contains("letterSpacing"):
-                        float letterSpacing = float.Parse(inputDict[kvp.Key].ToString());
-                        inputDict[kvp.Key] = (Math.Round(letterSpacing / baseFont, 2)).ToString();
+                        float letterSpacing = float.Parse(inputDict[kvp.Key]);
+                        var remValue = (Math.Round(letterSpacing / baseFont, 2)).ToString();
+                        inputDict[kvp.Key] = remValue;
 
-                        if (inputDict[kvp.Key].ToString() == "0.0")
+                        if (inputDict[kvp.Key].ToString() == "0")
                         {
                             tempDict[key + " Min"] = "-0.5";
                             tempDict[key + " Max"] = "0.5";
@@ -235,14 +240,14 @@ namespace StyleWeaver
                         {
                             tempDict[key + " Min"] = Math.Round(letterSpacing - (2 * letterSpacing), 2).ToString();
                             tempDict[key + " Max"] = Math.Round(letterSpacing + (2 * letterSpacing), 2).ToString();
-                            tempDict[key + " Step"] = GetStepValue(inputDict[kvp.Key].ToString());
+                            tempDict[key + " Step"] = GetStepValue(inputDict[kvp.Key]);
                         }
                         break;
                 }
             }
 
             inputDict["--fnt-t"] = fnt_t;
-            inputDict["--fnt-m"] = fnt_m;
+            inputDict["--fnt-m"] = fnt_m.ToString();
             foreach (var item in tempDict)
             {
                 inputDict[item.Key] = item.Value;
@@ -251,9 +256,9 @@ namespace StyleWeaver
             return inputDict;
         }
 
-        public static Dictionary<string, object> GetFontFamily(Dictionary<string, object> inputDict)
+        public static Dictionary<string, string> GetFontFamily(Dictionary<string, string> inputDict)
         {
-            Dictionary<string, object> bufferDict = new Dictionary<string, object>();
+            Dictionary<string, string> bufferDict = new Dictionary<string, string>();
 
             foreach (var item in inputDict)
             {
@@ -281,13 +286,13 @@ namespace StyleWeaver
             return ".1";
         }
 
-        public static string ReplaceTokens(Match match, Dictionary<string, object> inputDict)
+        public static string ReplaceTokens(Match match, Dictionary<string, string> inputDict)
         {
             var key = match.Groups[1].Value;
             return inputDict.ContainsKey(key) ? inputDict[key].ToString() : match.Groups[0].Value;
         }
 
-        public static void ApplyReplacements(Dictionary<string, object> inputDict, string fileName)
+        public static void ApplyReplacements(Dictionary<string, string> inputDict, string fileName)
         {
             string filePath = Path.Combine(folderPath, fileName);
 
