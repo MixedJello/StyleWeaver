@@ -28,6 +28,10 @@ namespace StyleWeaver
 
             FileManagement fileManagement = new FileManagement();
 
+            var imageApiTask = Task.Run(async () => await API.InitImageAPI());
+            imageApiTask.Wait();
+
+            Image projectImages = new Image();
 
             total.Stop();
             TimeSpan totalTS = total.Elapsed;
@@ -36,9 +40,8 @@ namespace StyleWeaver
             totalTS.Hours, totalTS.Minutes, totalTS.Seconds,
             totalTS.Milliseconds / 10);
             Console.WriteLine("Total Time: " + totalElapsedTime);
+            Console.WriteLine();
 
-
-            //Image image = new Image();
         }
 
 

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("StyleWeaver")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9a6dd8866c16cf0e26b412054d414cfff28b2e58")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+05ff1521949217fc882b96175b98cc656d1e1ebb")]
 [assembly: System.Reflection.AssemblyProductAttribute("StyleWeaver")]
 [assembly: System.Reflection.AssemblyTitleAttribute("StyleWeaver")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

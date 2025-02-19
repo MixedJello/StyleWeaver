@@ -1,10 +1,9 @@
-﻿using static StyleWeaver.Finder;
-using static StyleWeaver.API;
-using Microsoft.VisualBasic;
+﻿using static StyleWeaver.API;
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace StyleWeaver
 {
@@ -49,7 +48,7 @@ namespace StyleWeaver
             "--accent-alt"
         };
 
-        public static void GetAllColors() 
+        public static void GetAllColors()
         {
             GetUSCSwatches(); //Grabs the USC Swatches used in Figma and adds both light and dark
             GetLTColor(); //Grabs the light colors
@@ -68,7 +67,7 @@ namespace StyleWeaver
             }
         }
 
-        public static void GetUSCSwatches() 
+        public static void GetUSCSwatches()
         {
             var USCSwatches = ColorsSW.pageData.SelectTokens($"..children[?(@.name == 'USC Swatches')]");
 
@@ -90,8 +89,8 @@ namespace StyleWeaver
         {
 
             var red = Convert.ToUInt32(Double.Parse(r) * 255);  //var red = Convert.ToUInt32(Math.Round(Double.Parse(r), 2) * 255);
-            var green= Convert.ToUInt32(Double.Parse(g) * 255); //var green= Convert.ToUInt32(Math.Round(Double.Parse(g), 2) * 255);
-            var blue= Convert.ToUInt32(Double.Parse(b) * 255); //var blue= Convert.ToUInt32(Math.Round(Double.Parse(b), 2) * 255);
+            var green = Convert.ToUInt32(Double.Parse(g) * 255); //var green= Convert.ToUInt32(Math.Round(Double.Parse(g), 2) * 255);
+            var blue = Convert.ToUInt32(Double.Parse(b) * 255); //var blue= Convert.ToUInt32(Math.Round(Double.Parse(b), 2) * 255);
 
             return $"#{red:X2}{blue:X2}{green:X2}";
         }
@@ -107,7 +106,7 @@ namespace StyleWeaver
                 string rgb = null;
                 foreach (var value in colorStyle)
                 {
-                    
+
                     if (value.SelectToken("color.r") != null)
                     {
 
@@ -119,7 +118,7 @@ namespace StyleWeaver
                     }
                     ltColor[color] = rgb;
                 }
-                
+
             }
             ColorsSW.LTColors = ltColor;
         }
@@ -129,7 +128,7 @@ namespace StyleWeaver
             Dictionary<string, object> dkColor = new Dictionary<string, object>();
             foreach (var color in ColorsSW.targetDKColorKeys)
             {
-                var removedAltColor = color.Substring(0, (color.Count() - 4) );
+                var removedAltColor = color.Substring(0, (color.Count() - 4));
                 var colorObject = ColorsSW.dkUSCSwatch.SelectToken($"..children[?(@.name == '{removedAltColor}')]");
 
                 var colorStyle = colorObject.SelectTokens("..[?(@.color)]");

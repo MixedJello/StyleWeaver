@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static StyleWeaver.Finder;
+
 
 namespace StyleWeaver
 {
@@ -73,7 +73,7 @@ namespace StyleWeaver
             foreach (var fontKey in Fonts.targetFontKeys)
             {
                 var fontObject = Fonts.pageData.SelectToken($"..children[?(@.name == '{fontKey}')]");
-                
+
                 foreach (var fontStyle in Fonts.fontStyleKeys)
                 {
                     var style = fontObject.SelectToken($"style.{fontStyle}");
@@ -84,7 +84,7 @@ namespace StyleWeaver
                         continue;
                     }
                     //Need to find a way to round this.
-                    if (Array.Exists(intKeys, key => key == fontStyle) && style.Type == JTokenType.Float && style.Value % 1 != 0 )// && Array.Exists(intKeys, key => key == fontStyle)
+                    if (Array.Exists(intKeys, key => key == fontStyle) && style.Type == JTokenType.Float && style.Value % 1 != 0)// && Array.Exists(intKeys, key => key == fontStyle)
                     {
                         style = Math.Round(style.Value, 2);
                     }

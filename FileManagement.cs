@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace StyleWeaver
 {
@@ -14,6 +11,7 @@ namespace StyleWeaver
 
         public static string colorFilePath = "colors.txt";
         public static string fontFilePath = "fonts.txt";
+        public static string imageFolderPath = "Assets";
 
         public FileManagement()
         {
@@ -22,7 +20,9 @@ namespace StyleWeaver
             {
                 Directory.CreateDirectory(folderPath);
                 Console.WriteLine($"Folder 'StyleWeaver' created at: {folderPath}");
-
+                if (!Directory.Exists(folderPath + imageFolderPath))
+                    Directory.CreateDirectory(folderPath + "\\" + imageFolderPath);
+                Console.WriteLine($"Folder 'Assets' created at: {folderPath}{imageFolderPath}");
                 colorFilePath = Path.Combine(folderPath, "colors.txt");
                 fontFilePath = Path.Combine(folderPath, "fonts.txt");
 
@@ -49,7 +49,7 @@ namespace StyleWeaver
                     }
                 ");
                 }
-
+                //fix secondary nav variables, fix note, fix item, rearragne to match all for one
                 // Create and write default data to fonts.txt
                 using (StreamWriter writer = new StreamWriter(fontFilePath))
                 {
@@ -109,27 +109,37 @@ namespace StyleWeaver
                         --fnt-nv-pry-tt: **Primary Nav Link textCase**; /* { friendly: 'Top Nav Link Case' } */	
                         --fnt-nv-pry-fs: **Primary Nav Link italic**; /* { friendly: 'Top Nav Link Style' } */
                         
+                        --fnt-nv-sec-ff: **Secondary Nav fontFamily**; /* { friendly: 'Secondary Nav Link Font Family' } */
+                        --fnt-nv-sec-ls: **Secondary Nav letterSpacing**em; /* { min: **Secondary Nav letterSpacing Min**, max: **Secondary Nav letterSpacing Max**, step: **Secondary Nav letterSpacing Step**, friendly: 'Secondary Nav Link Letter Spacing' } */
+                        --fnt-nv-sec-w: **Secondary Nav fontWeight**; /* { friendly: 'Secondary Nav Link Font Weight' } */
+                        --fnt-nv-sec-tt: **Secondary Nav textCase**; /* { friendly: 'Secondary Nav Link Case' } */	
+                        --fnt-nv-sec-fs: **Secondary Nav italic**; /* { friendly: 'Secondary Nav Link Style' } */
+
                         --fnt-qte-ff: **Quote fontFamily**; /* { friendly: 'Quote Font Family' } */
                         --fnt-qte-ls: **Quote letterSpacing**em; /* { min: **Quote letterSpacing Min**, max: **Quote letterSpacing Max**, step: **Quote letterSpacing Step**, friendly: 'Quote Letter Spacing' } */
                         --fnt-qte-w: **Quote fontWeight**; /* { friendly: 'Quote Font Weight' } */
                         --fnt-qte-tt: **Quote textCase**; /* { friendly: 'Quote Case' } */
                         --fnt-qte-fs: **Quote italic**; /* { friendly: 'Quote Font Style' } */
                         
-                        --fnt-snv-lnk-ff: **Secondary Nav fontFamily**; /* { friendly: 'Secondary Nav Link Font Family' } */
-                        --fnt-snv-lnk-ls: **Secondary Nav letterSpacing**em; /* { min: **Secondary Nav letterSpacing Min**, max: **Secondary Nav letterSpacing Max**, step: **Secondary Nav letterSpacing Step**, friendly: 'Secondary Nav Link Letter Spacing' } */
-                        --fnt-snv-lnk-w: **Secondary Nav fontWeight**; /* { friendly: 'Secondary Nav Link Font Weight' } */
-                        --fnt-snv-lnk-tt: **Secondary Nav textCase**; /* { friendly: 'Secondary Nav Link Case' } */	
-                        --fnt-snv-lnk-fs: **Secondary Nav italic**; /* { friendly: 'Secondary Nav Link Style' } */
-                        
-                        --fnt-atr-ff: **Author fontFamily**; /* { friendly: 'Author Font Family' } */
-                        --fnt-atr-ls: **Author letterSpacing**em; /* { min: **Author letterSpacing Min**, max: **Author letterSpacing Max**, step: **Author letterSpacing Step**, friendly: 'Author Letter Spacing' } */
-                        --fnt-atr-w: **Author fontWeight**; /* { friendly: 'Author Font Weight' } */
-                        --fnt-atr-tt: **Author textCase**; /* { friendly: 'Author Case' } */
-                        --fnt-atr-fs: **Author italic**; /* { friendly: 'Author Font Style' } */
+                        --fnt-atr-ff: **Author Name fontFamily**; /* { friendly: 'Author Name Font Family' } */
+                        --fnt-atr-ls: **Author Name letterSpacing**em; /* { min: **Author Name letterSpacing Min**, max: **Author Name letterSpacing Max**, step: **Author Name letterSpacing Step**, friendly: 'Author Name Letter Spacing' } */
+                        --fnt-atr-w: **Author Name fontWeight**; /* { friendly: 'Author Name Font Weight' } */
+                        --fnt-atr-tt: **Author Name textCase**; /* { friendly: 'Author Name Case' } */
+                        --fnt-atr-fs: **Author Name italic**; /* { friendly: 'Author Name Font Style' } */
                     
                         --fnt-phn-ff: **Phone Number fontFamily**; /* { friendly: 'Phone Font Family' } */
                         --fnt-phn-ls: **Phone Number letterSpacing**em; /* { min: **Phone Number letterSpacing Min**, max: **Phone Number letterSpacing Max**, step: **Phone Number letterSpacing Step**, friendly: 'Phone Letter Spacing' } */
                         --fnt-phn-w: **Phone Number fontWeight**; /* { friendly: 'Phone Font Weight' } */
+
+                        --fnt-t-itm-ff: **Item fontFamily**; /* { friendly: 'Item Title Font Family' } */
+	                --fnt-t-itm-ls: **Item letterSpacing**em; /* { min: **Item letterSpacing Min**, max: **Item letterSpacing Max**, step: **Item letterSpacing Step**, friendly: 'Item Title Letter Spacing' } */
+	                --fnt-t-itm-w: **Item fontWeight**; /* { friendly: 'Item Title Font Weight' } */
+	                --fnt-t-itm-tt: **Item textCase**; /* { friendly: 'Item Title Case' } */
+	
+	                --fnt-t-nt-ff: **Note fontFamily**; /* { friendly: 'Note Font Family' } */
+	                --fnt-t-nt-ls: **Note letterSpacing**em; /* { min: **Note letterSpacing Min**, max: **Note letterSpacing Max**, step: **Note letterSpacing Step**, friendly: 'Note Letter Spacing' } */
+	                --fnt-t-nt-w: **Note fontWeight**; /* { friendly: 'Note Font Weight' } */
+	                --fnt-t-nt-tt: **Note textCase**; /* { friendly: 'Note Case' } */
 
                         --tag-ff: **Tag fontFamily**; /* { friendly: 'Tag Font Family' } */
                         --tag-ls: **Tag letterSpacing**em; /* { min: **Tag letterSpacing Min**, max: **Tag letterSpacing Max**, step: **Tag letterSpacing Step**, friendly: 'Tag Letter Spacing' } */
@@ -195,6 +205,9 @@ namespace StyleWeaver
                                 break;
                             case "TITLE":
                                 inputDict[kvp.Key] = "capitalize";
+                                break;
+                            case "LOWER":
+                                inputDict[kvp.Key] = "lowercase";
                                 break;
                             case "":
                                 inputDict[kvp.Key] = "none";
