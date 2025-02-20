@@ -13,12 +13,10 @@ namespace StyleWeaver
     public class API
     {
         static string personalAccessKey = Config.personalAccessKey;   //StyleWeaver Key Token
-        //Master: vDumLlFAmbWExNHqMBlUxq Project: bUlmS1PkEK4kZsYULddISv Project: PJ6pFB5t7LLYmpGYY1oZnX Project: gEt3ufDSW2JkQusTrlRA0M
-        static string projectUrlKey = "55MLPRSTRcMAPhftc556Ur";
+        static string projectUrlKey = Config.projectUrlKey;
         static string url = "https://api.figma.com/v1/files/" + projectUrlKey;
-        //IMPORTANT - HC sites have different IDs for FileData!!!!!
-        //Below are the IDs for Franchise!!!
-        static string urlIDs = url + "/nodes" + "?ids=" + "2009:1582,4197:1402"; //2009:1582,4197:1402
+        
+        static string urlIDs = url + "/nodes?ids=2009:1582,4197:1402"; 
 
         static string imageAPIPath = "/images";
 
