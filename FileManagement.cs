@@ -49,7 +49,6 @@ namespace StyleWeaver
                     }
                 ");
                 }
-                //fix secondary nav variables, fix note, fix item, rearragne to match all for one
                 // Create and write default data to fonts.txt
                 using (StreamWriter writer = new StreamWriter(fontFilePath))
                 {

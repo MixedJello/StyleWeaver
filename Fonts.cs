@@ -83,8 +83,7 @@ namespace StyleWeaver
                         fonts[fontKey + " " + fontStyle] = "";
                         continue;
                     }
-                    //Need to find a way to round this.
-                    if (Array.Exists(intKeys, key => key == fontStyle) && style.Type == JTokenType.Float && style.Value % 1 != 0)// && Array.Exists(intKeys, key => key == fontStyle)
+                    if (Array.Exists(intKeys, key => key == fontStyle) && style.Type == JTokenType.Float && style.Value % 1 != 0)
                     {
                         style = Math.Round(style.Value, 2);
                     }
